@@ -17,11 +17,11 @@ services:
         resource: "../src/"
         exclude:
             - "../src/DependencyInjection/"
-            - "../src/Domain/Entity/"
-            - "../src/Infrastructure/Symfony/Kernel.php"
-            - "../src/Infrastructure/Doctrine/Migrations/"
+            - "../src/Shared/Infrastructure/Symfony/Kernel.php"
+            - "../src/Shared/Infrastructure/Doctrine/Migration/"
+
+            - "%kernel.project_dir%/src/Shared/Domain/Entity/"
+            - "%kernel.project_dir%/src/Mod/Domain/Entity/"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Domain\Repository: '@App\Infrastructure\Doctrine\Repository'
