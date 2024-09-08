@@ -8,5 +8,6 @@ services:
             - ../src/DependencyInjection/
             - ../src/Shared/Infrastructure/Symfony/Kernel.php
             - ../src/Shared/Infrastructure/Doctrine/Migration/
+            - ../src/Shared/Infrastructure/Symfony/Command/templates/
             - "%kernel.project_dir%/src/Shared/Domain/Entity/"
             - "%kernel.project_dir%/src/Mod/Domain/Entity/"
