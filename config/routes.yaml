@@ -3,8 +3,7 @@ shared_controllers:
         path: ../src/Shared/Application/Controller/
         namespace: App\Shared\Application\Controller
     type: attribute
-
-mod_controllers_mod:
+mod_controllers:
     resource:
         path: ../src/Mod/Application/Controller/
         namespace: App\Mod\Application\Controller

@@ -1,11 +1,6 @@
 doctrine:
     dbal:
         url: "%env(resolve:DATABASE_URL)%"
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '16'
-
         profiling_collect_backtrace: "%kernel.debug%"
         use_savepoints: true
     orm:
@@ -17,44 +12,41 @@ doctrine:
         auto_mapping: true
         mappings:
             Shared:
-                is_bundle: false
-                type: xml
-                dir: "%kernel.project_dir%/src/Shared/Infrastructure/Doctrine/Mapping"
-                prefix: 'App\Shared\Domain\Entity'
-                alias: Shared
-                mapping: true
+                {
+                    is_bundle: false,
+                    type: xml,
+                    dir: "%kernel.project_dir%/src/Shared/Infrastructure/Doctrine/Mapping",
+                    prefix: App\Shared\Domain\Entity,
+                    alias: Shared,
+                    mapping: true,
+                }
             Mod:
-                is_bundle: false
-                type: xml
-                dir: "%kernel.project_dir%/src/Mod/Infrastructure/Doctrine/Mapping"
-                prefix: 'App\Mod\Domain\Entity'
-                alias: Mod
-                mapping: true
+                {
+                    is_bundle: false,
+                    type: xml,
+                    dir: "%kernel.project_dir%/src/Mod/Infrastructure/Doctrine/Mapping",
+                    prefix: App\Mod\Domain\Entity,
+                    alias: Mod,
+                    mapping: true,
+                }
         controller_resolver:
             auto_mapping: false
-
 when@test:
     doctrine:
         dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
             dbname_suffix: "_test%env(default::TEST_TOKEN)%"
-
 when@prod:
     doctrine:
         orm:
             auto_generate_proxy_classes: false
             proxy_dir: "%kernel.build_dir%/doctrine/orm/Proxies"
-            query_cache_driver:
-                type: pool
-                pool: doctrine.system_cache_pool
+            query_cache_driver: { type: pool, pool: doctrine.system_cache_pool }
             result_cache_driver:
-                type: pool
-                pool: doctrine.result_cache_pool
-
+                { type: pool, pool: doctrine.result_cache_pool }
     framework:
         cache:
             pools:
-                doctrine.result_cache_pool:
-                    adapter: cache.app
-                doctrine.system_cache_pool:
-                    adapter: cache.system
+                {
+                    doctrine.result_cache_pool: { adapter: cache.app },
+                    doctrine.system_cache_pool: { adapter: cache.system },
+                }
