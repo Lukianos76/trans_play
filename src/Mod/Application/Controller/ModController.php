@@ -3,11 +3,11 @@
 namespace App\Mod\Application\Controller;
 
 use App\Mod\Application\DTO\ModDTO;
-use App\Mod\Application\Handler\CreateModHandler;
-use App\Mod\Application\Handler\DeleteModHandler;
-use App\Mod\Application\Handler\GetAllModHandler;
-use App\Mod\Application\Handler\GetModHandler;
-use App\Mod\Application\Handler\UpdateModHandler;
+use App\Mod\Application\UseCase\CreateModUseCase;
+use App\Mod\Application\UseCase\DeleteModUseCase;
+use App\Mod\Application\UseCase\GetAllModUseCase;
+use App\Mod\Application\UseCase\GetModUseCase;
+use App\Mod\Application\UseCase\UpdateModUseCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,17 +17,17 @@ final class ModController extends AbstractController
 {
 
     public function __construct(
-        private GetModHandler $getModHandler,
-        private GetAllModHandler $getAllModHandler,
-        private CreateModHandler $createModHandler,
-        private DeleteModHandler $deleteModHandler,
-        private UpdateModHandler $updateModHandler
+        private GetModUseCase $getModUseCase,
+        private GetAllModUseCase $getAllModUseCase,
+        private CreateModUseCase $createModUseCase,
+        private DeleteModUseCase $deleteModUseCase,
+        private UpdateModUseCase $updateModUseCase
     ) {}
 
     #[Route('/mods', methods: ['GET'])]
     public function getAllMods()
     {
-        $mods = $this->getAllModHandler->handle();
+        $mods = $this->getAllModUseCase->execute();
         return $this->json($mods);
     }
 
@@ -42,7 +42,7 @@ final class ModController extends AbstractController
             return $this->json(['error' => 'The id must be a number'], Response::HTTP_BAD_REQUEST);
         }
 
-        $mod = $this->getModHandler->handle($id);
+        $mod = $this->getModUseCase->execute($id);
         return $this->json($mod);
     }
 
@@ -53,7 +53,7 @@ final class ModController extends AbstractController
 
         $modDTO = new ModDTO($data);
 
-        $result = $this->createModHandler->handle($modDTO);
+        $result = $this->createModUseCase->execute($modDTO);
 
         if (isset($result['errors'])) {
             return $this->json($result['errors'], Response::HTTP_BAD_REQUEST);
@@ -65,7 +65,7 @@ final class ModController extends AbstractController
     #[Route('/mod/{id}', methods: ['DELETE'])]
     public function deleteMod(int $id): Response
     {
-        if ($this->deleteModHandler->handle($id)) {
+        if ($this->deleteModUseCase->execute($id)) {
             return $this->json(null, Response::HTTP_NO_CONTENT);
         }
 
@@ -79,7 +79,7 @@ final class ModController extends AbstractController
 
         $modDTO = new ModDTO($data);
 
-        $mod = $this->updateModHandler->handle($id, $modDTO);
+        $mod = $this->updateModUseCase->execute($id, $modDTO);
 
         if (!$mod) {
             return $this->json(['error' => 'Mod not found'], Response::HTTP_NOT_FOUND);

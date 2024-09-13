@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Mod\Application\Handler;
+namespace App\Mod\Application\UseCase;
 
 use App\Mod\Domain\Repository\ModRepositoryInterface;
 
-final class GetAllModHandler
+final class GetAllModUseCase
 {
     public function __construct(private ModRepositoryInterface $modRepository) {}
 
-    public function handle(): array
+    public function execute(): array
     {
         $mods = $this->modRepository->getAll();
 

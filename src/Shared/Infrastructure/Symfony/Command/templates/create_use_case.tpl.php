@@ -1,17 +1,17 @@
 <?php
 
-namespace App\{{entityName}}\Application\Handler;
+namespace App\{{entityName}}\Application\UseCase;
 
 use App\{{entityName}}\Application\DTO\{{entityName}}DTO;
 use App\{{entityName}}\Domain\Entity\{{entityName}};
 use App\{{entityName}}\Domain\Repository\{{entityName}}RepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class Create{{entityName}}Handler
+final class Create{{entityName}}UseCase
 {
     public function __construct(private {{entityName}}RepositoryInterface ${{entityNameLower}}Repository, private ValidatorInterface $validator) {}
 
-    public function handle({{entityName}}DTO ${{entityNameLower}}DTO): array
+    public function execute({{entityName}}DTO ${{entityNameLower}}DTO): array
     {
         $errors = $this->validator->validate(${{entityNameLower}}DTO);
 

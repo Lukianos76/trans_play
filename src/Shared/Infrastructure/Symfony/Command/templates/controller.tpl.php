@@ -3,11 +3,11 @@
 namespace App\{{entityName}}\Application\Controller;
 
 use App\{{entityName}}\Application\DTO\{{entityName}}DTO;
-use App\{{entityName}}\Application\Handler\Create{{entityName}}Handler;
-use App\{{entityName}}\Application\Handler\Delete{{entityName}}Handler;
-use App\{{entityName}}\Application\Handler\GetAll{{entityName}}Handler;
-use App\{{entityName}}\Application\Handler\Get{{entityName}}Handler;
-use App\{{entityName}}\Application\Handler\Update{{entityName}}Handler;
+use App\{{entityName}}\Application\UseCase\Create{{entityName}}UseCase;
+use App\{{entityName}}\Application\UseCase\Delete{{entityName}}UseCase;
+use App\{{entityName}}\Application\UseCase\GetAll{{entityName}}UseCase;
+use App\{{entityName}}\Application\UseCase\Get{{entityName}}UseCase;
+use App\{{entityName}}\Application\UseCase\Update{{entityName}}UseCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,17 +17,17 @@ final class {{entityName}}Controller extends AbstractController
 {
 
     public function __construct(
-        private Get{{entityName}}Handler $get{{entityName}}Handler,
-        private GetAll{{entityName}}Handler $getAll{{entityName}}Handler,
-        private Create{{entityName}}Handler $create{{entityName}}Handler,
-        private Delete{{entityName}}Handler $delete{{entityName}}Handler,
-        private Update{{entityName}}Handler $update{{entityName}}Handler
+        private Get{{entityName}}UseCase $get{{entityName}}UseCase,
+        private GetAll{{entityName}}UseCase $getAll{{entityName}}UseCase,
+        private Create{{entityName}}UseCase $create{{entityName}}UseCase,
+        private Delete{{entityName}}UseCase $delete{{entityName}}UseCase,
+        private Update{{entityName}}UseCase $update{{entityName}}UseCase
     ) {}
 
     #[Route('/{{entityNameLower}}s', methods: ['GET'])]
     public function getAll{{entityName}}s()
     {
-        ${{entityNameLower}}s = $this->getAll{{entityName}}Handler->handle();
+        ${{entityNameLower}}s = $this->getAll{{entityName}}UseCase->execute();
         return $this->json(${{entityNameLower}}s);
     }
 
@@ -42,7 +42,7 @@ final class {{entityName}}Controller extends AbstractController
             return $this->json(['error' => 'The id must be a number'], Response::HTTP_BAD_REQUEST);
         }
 
-        ${{entityNameLower}} = $this->get{{entityName}}Handler->handle($id);
+        ${{entityNameLower}} = $this->get{{entityName}}UseCase->execute($id);
         return $this->json(${{entityNameLower}});
     }
 
@@ -53,7 +53,7 @@ final class {{entityName}}Controller extends AbstractController
 
         ${{entityNameLower}}DTO = new {{entityName}}DTO($data);
 
-        $result = $this->create{{entityName}}Handler->handle(${{entityNameLower}}DTO);
+        $result = $this->create{{entityName}}UseCase->execute(${{entityNameLower}}DTO);
 
         if (isset($result['errors'])) {
             return $this->json($result['errors'], Response::HTTP_BAD_REQUEST);
@@ -65,7 +65,7 @@ final class {{entityName}}Controller extends AbstractController
     #[Route('/{{entityNameLower}}/{id}', methods: ['DELETE'])]
     public function delete{{entityName}}(int $id): Response
     {
-        if ($this->delete{{entityName}}Handler->handle($id)) {
+        if ($this->delete{{entityName}}UseCase->execute($id)) {
             return $this->json(null, Response::HTTP_NO_CONTENT);
         }
 
@@ -79,7 +79,7 @@ final class {{entityName}}Controller extends AbstractController
 
         ${{entityNameLower}}DTO = new {{entityName}}DTO($data);
 
-        ${{entityNameLower}} = $this->update{{entityName}}Handler->handle($id, ${{entityNameLower}}DTO);
+        ${{entityNameLower}} = $this->update{{entityName}}UseCase->execute($id, ${{entityNameLower}}DTO);
 
         if (!${{entityNameLower}}) {
             return $this->json(['error' => '{{entityName}} not found'], Response::HTTP_NOT_FOUND);

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Mod\Application\Handler;
+namespace App\Mod\Application\UseCase;
 
 use App\Mod\Application\DTO\ModDTO;
 use App\Mod\Domain\Entity\Mod;
 use App\Mod\Domain\Repository\ModRepositoryInterface;
 
-final class UpdateModHandler
+final class UpdateModUseCase
 {
     public function __construct(private ModRepositoryInterface $modRepository) {}
 
-    public function handle(int $modId, ModDTO $modDto): ?Mod
+    public function execute(int $modId, ModDTO $modDto): ?Mod
     {
         $mod = $this->modRepository->getOneById($modId);
 
