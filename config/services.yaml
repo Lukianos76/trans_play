@@ -1,5 +1,8 @@
 parameters:
-    file_upload_path: "%kernel.project_dir%/var/uploads/"
+    filesystem_type: "local" # or 's3'
+    filesystem_config:
+        path: "%kernel.project_dir%/var/uploads"
+
 services:
     _defaults:
         autowire: true
@@ -13,3 +16,7 @@ services:
             - ../src/Shared/Infrastructure/Symfony/Command/templates/
             - "%kernel.project_dir%/src/Shared/Domain/Entity/"
             - "%kernel.project_dir%/src/Mod/Domain/Entity/"
+    App\Shared\Infrastructure\FileSystem\FileSystemFactory:
+        arguments:
+            $type: "%filesystem_type%"
+            $config: "%filesystem_config%"
