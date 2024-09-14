@@ -3,10 +3,10 @@
 namespace App\Shared\Infrastructure\FileSystem;
 
 use App\Shared\Domain\FileSystem\FileSystemInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 class LocalFileSystem implements FileSystemInterface
 {
@@ -25,7 +25,7 @@ class LocalFileSystem implements FileSystemInterface
         foreach ($files as $file) {
             if ($file instanceof UploadedFile) {
                 // Générer un UUID pour chaque fichier
-                $fileUuid = Uuid::uuid4()->toString();
+                $fileUuid = Uuid::v4()->toString();
                 $filename = $fileUuid . '.' . $file->guessExtension();
                 $file->move($destinationPath, $filename);
                 $uploadedFiles[] = [
