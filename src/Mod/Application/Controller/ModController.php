@@ -31,18 +31,18 @@ final class ModController extends AbstractController
         return $this->json($mods);
     }
 
-    #[Route('/mod/{id}', methods: ['GET'])]
-    public function getMod($id)
+    #[Route('/mod/{modId}', methods: ['GET'])]
+    public function getMod($modId)
     {
-        if (!$id) {
-            return $this->json(['error' => 'An id is required'], Response::HTTP_BAD_REQUEST);
+        if (!$modId) {
+            return $this->json(['error' => 'An modId is required'], Response::HTTP_BAD_REQUEST);
         }
 
-        if (!is_numeric($id)) {
-            return $this->json(['error' => 'The id must be a number'], Response::HTTP_BAD_REQUEST);
+        if (!is_numeric($modId)) {
+            return $this->json(['error' => 'The modId must be a number'], Response::HTTP_BAD_REQUEST);
         }
 
-        $mod = $this->getModUseCase->execute($id);
+        $mod = $this->getModUseCase->execute($modId);
         return $this->json($mod);
     }
 
@@ -62,24 +62,24 @@ final class ModController extends AbstractController
         return $this->json($result['mod'], Response::HTTP_CREATED);
     }
 
-    #[Route('/mod/{id}', methods: ['DELETE'])]
-    public function deleteMod(int $id): Response
+    #[Route('/mod/{modId}', methods: ['DELETE'])]
+    public function deleteMod(int $modId): Response
     {
-        if ($this->deleteModUseCase->execute($id)) {
+        if ($this->deleteModUseCase->execute($modId)) {
             return $this->json(null, Response::HTTP_NO_CONTENT);
         }
 
         return $this->json(['error' => 'Mod not found'], Response::HTTP_NOT_FOUND);
     }
 
-    #[Route('/mod/{id}', methods: ['PUT'])]
-    public function updateMod(Request $request, int $id): Response
+    #[Route('/mod/{modId}', methods: ['PUT'])]
+    public function updateMod(Request $request, int $modId): Response
     {
         $data = json_decode($request->getContent(), true);
 
         $modDTO = new ModDTO($data);
 
-        $mod = $this->updateModUseCase->execute($id, $modDTO);
+        $mod = $this->updateModUseCase->execute($modId, $modDTO);
 
         if (!$mod) {
             return $this->json(['error' => 'Mod not found'], Response::HTTP_NOT_FOUND);

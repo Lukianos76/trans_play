@@ -2,13 +2,14 @@
 
 namespace App\Mod\Infrastructure\Symfony\Validator;
 
+use App\Mod\Application\DTO\ModDTO;
 use App\Mod\Domain\Validator\ModValidatorInterface;
 use App\Shared\Infrastructure\Symfony\Validator\SymfonyValidator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyModValidator extends SymfonyValidator implements ModValidatorInterface
 {
-    public function validate(array $data)
+    public function validate(ModDTO $modDTO)
     {
         $constraints = new Assert\Collection([
             'name' => new Assert\NotBlank(),
@@ -20,6 +21,6 @@ class SymfonyModValidator extends SymfonyValidator implements ModValidatorInterf
             ],
         ]);
 
-        return $this->validator->validate($data, $constraints);
+        return $this->validator->validate($modDTO->toArray(), $constraints);
     }
 }
