@@ -9,18 +9,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyModValidator extends SymfonyValidator implements ModValidatorInterface
 {
-    public function validate(ModDTO $modDTO)
+    public function validate(ModDTO $modDTO, array $fieldsToValidate = [])
     {
-        $constraints = new Assert\Collection([
-            'name' => new Assert\NotBlank(),
-            'description' => new Assert\NotBlank(),
-            'version' => new Assert\NotBlank(),
-            'url' => [
+        $constraints = [];
+
+        if (empty($fieldsToValidate)) {
+            $fieldsToValidate = ['name', 'description', 'version', 'url', 'gameId'];
+        }
+
+        if (in_array('name', $fieldsToValidate)) {
+            $constraints['name'] = new Assert\NotBlank();
+        }
+
+        if (in_array('description', $fieldsToValidate)) {
+            $constraints['description'] = new Assert\Optional(new Assert\NotBlank());
+        }
+
+        if (in_array('version', $fieldsToValidate)) {
+            $constraints['version'] = new Assert\Optional(new Assert\NotBlank());
+        }
+
+        if (in_array('url', $fieldsToValidate)) {
+            $constraints['url'] = [
                 new Assert\NotBlank(),
                 new Assert\Url(),
-            ],
-        ]);
+            ];
+        }
 
-        return $this->validator->validate($modDTO->toArray(), $constraints);
+        if (in_array('gameId', $fieldsToValidate)) {
+            $constraints['gameId'] = new Assert\NotBlank();
+        }
+
+        $collectionConstraint = new Assert\Collection($constraints);
+
+        return $this->validator->validate($modDTO->toArray(), $collectionConstraint);
     }
 }

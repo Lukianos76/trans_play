@@ -3,14 +3,16 @@
 namespace App\Domain\Entity\Mod;
 
 use App\Domain\Entity\Entity;
+use App\Domain\Entity\Game\Game;
 
 class Mod extends Entity
 {
     private string $name;
-    private string $description;
-    private string $version;
+    private ?string $description;
+    private ?string $version;
     private string $url;
     private $modFiles;
+    private Game $game;
 
     public function __construct(array $modData)
     {
@@ -18,9 +20,10 @@ class Mod extends Entity
             parent::__construct($modData['id']);
         }
         $this->name = $modData['name'];
-        $this->description = $modData['description'];
-        $this->version = $modData['version'];
+        $this->description = $modData['description'] ?? null;
+        $this->version = $modData['version'] ?? null;
         $this->url = $modData['url'];
+        $this->game = $modData['game'];
     }
 
     public function getName()
@@ -85,6 +88,17 @@ class Mod extends Entity
             $modFile->setMod(null);
         }
 
+        return $this;
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function setGame(?Game $game): self
+    {
+        $this->game = $game;
         return $this;
     }
 }

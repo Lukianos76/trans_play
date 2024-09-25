@@ -14,5 +14,8 @@
                 <cascade-remove />
             </cascade>
         </one-to-many>
+        <many-to-one field="game" target-entity="App\Domain\Entity\Game\Game">
+            <join-column name="game_id" referenced-column-name="id" nullable="true" />
+        </many-to-one>
     </entity>
 </doctrine-mapping>

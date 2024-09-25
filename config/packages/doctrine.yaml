@@ -35,6 +35,13 @@ doctrine:
                 prefix: App\Domain\Entity\Mod
                 alias: Mod
                 mapping: true
+            Game:
+                is_bundle: false
+                type: xml
+                dir: "%doctrine_mapping_dir%/Game"
+                prefix: App\Domain\Entity\Game
+                alias: Game
+                mapping: true
         controller_resolver:
             auto_mapping: false
 when@test:

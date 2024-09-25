@@ -20,4 +20,18 @@ abstract class Entity
     {
         $this->id = $id;
     }
+
+    public function toArray()
+    {
+        $reflectionClass = new \ReflectionClass($this);
+        $properties = $reflectionClass->getProperties();
+        $array = [];
+
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $array[$property->getName()] = $property->getValue($this);
+        }
+
+        return $array;
+    }
 }

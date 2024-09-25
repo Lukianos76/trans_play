@@ -24,9 +24,16 @@ class ExceptionListener
         $response = new JsonResponse();
 
         if ($exception instanceof ValidationException) {
-            $response->setData(['errors' => $exception->getErrors()]);
+            $errors = [];
+            foreach ($exception->getErrors() as $violation) {
+                $errors[] = [
+                    'field' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
+            $response->setData(['errors' => $errors]);
             $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
-            $this->logger->error('Validation error', ['errors' => $exception->getErrors()]);
+            $this->logger->error('Validation error', ['errors' => $errors]);
         } elseif ($exception instanceof ElementNotFoundException) {
             $response->setData(['error' => $exception->getMessage()]);
             $response->setStatusCode(JsonResponse::HTTP_NOT_FOUND);

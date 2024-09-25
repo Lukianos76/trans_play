@@ -12,3 +12,5 @@ App\Domain\Entity\Mod\Mod:
       groups: ["mod"]
     modFiles:
       groups: ["mod"]
+    game:
+      groups: ["mod"]

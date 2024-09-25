@@ -6,5 +6,5 @@ use App\Application\DTO\Mod\ModDTO;
 
 interface ModValidatorInterface
 {
-    public function validate(ModDTO $modDTO);
+    public function validate(ModDTO $modDTO, array $fieldsToValidate = []);
 }

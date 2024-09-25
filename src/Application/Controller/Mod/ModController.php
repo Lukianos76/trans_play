@@ -54,13 +54,10 @@ final class ModController extends AbstractController
     #[Route('/mod', methods: ['POST'])]
     public function createMod(Request $request): Response
     {
-        $data = json_decode($request->getContent(), true);
-
-        $modDTO = new ModDTO($data);
+        $datas = json_decode($request->getContent(), true);
 
         try {
-            $result = $this->createModUseCase->execute($modDTO);
-            $mod = $result['mod'];
+            $mod = $this->createModUseCase->execute($datas);
         } catch (ValidationException $e) {
             throw $e;
         }
@@ -84,12 +81,10 @@ final class ModController extends AbstractController
     #[Route('/mod/{modId}', methods: ['PUT'])]
     public function updateMod(Request $request, $modId): Response
     {
-        $data = json_decode($request->getContent(), true);
-
-        $modDTO = new ModDTO($data);
+        $datas = json_decode($request->getContent(), true);
 
         try {
-            $mod = $this->updateModUseCase->execute($modId, $modDTO);
+            $mod = $this->updateModUseCase->execute($modId, $datas);
         } catch (ElementNotFoundException $e) {
             throw $e;
         }

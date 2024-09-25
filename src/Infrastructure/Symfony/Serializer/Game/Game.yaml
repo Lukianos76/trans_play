@@ -1,0 +1,6 @@
+App\Domain\Entity\Game\Game:
+  attributes:
+    id:
+      groups: ["game", "mod"]
+    name:
+      groups: ["game", "mod"]
