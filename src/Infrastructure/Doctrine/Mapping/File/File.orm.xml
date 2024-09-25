@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.doctrine-project.org/schemas/orm/doctrine-mapping http://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Entity\File\File" table="files" inheritance-type="JOINED">
+        <field name="name" type="string" column="name" length="255" nullable="false" />
+        <field name="originalName" type="string" column="original_name" length="255"
+            nullable="false" />
+        <field name="path" type="string" column="path" length="255" nullable="false" />
+    </entity>
+
+</doctrine-mapping>

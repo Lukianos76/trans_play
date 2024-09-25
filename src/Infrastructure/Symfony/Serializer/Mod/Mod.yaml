@@ -1,0 +1,14 @@
+App\Domain\Entity\Mod\Mod:
+  attributes:
+    id:
+      groups: ["mod"]
+    name:
+      groups: ["mod"]
+    description:
+      groups: ["mod"]
+    version:
+      groups: ["mod"]
+    url:
+      groups: ["mod"]
+    modFiles:
+      groups: ["mod"]

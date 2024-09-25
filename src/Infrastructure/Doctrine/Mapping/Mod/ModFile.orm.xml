@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.doctrine-project.org/schemas/orm/doctrine-mapping http://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Domain\Entity\Mod\ModFile" table="mod_files" inheritance-type="JOINED">
+        <many-to-one field="mod" target-entity="App\Domain\Entity\Mod\Mod" inversed-by="modFiles">
+            <join-column name="mod_id" referenced-column-name="id" nullable="false" />
+        </many-to-one>
+        <many-to-one field="file" target-entity="App\Domain\Entity\File\File">
+            <cascade>
+                <cascade-remove />
+            </cascade>
+            <join-column name="file_id" referenced-column-name="id" nullable="false" />
+        </many-to-one>
+    </entity>
+</doctrine-mapping>

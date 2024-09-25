@@ -1,0 +1,10 @@
+App\Domain\Entity\File\File:
+  attributes:
+    id:
+      groups: ["file", "modFile", "mod"]
+    name:
+      groups: ["file", "modFile", "mod"]
+    originalName:
+      groups: ["file", "modFile", "mod"]
+    path:
+      groups: ["file", "modFile", "mod"]

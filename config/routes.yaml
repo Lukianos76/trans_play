@@ -1,10 +1,5 @@
-shared_controllers:
+controllers:
     resource:
-        path: ../src/Shared/Application/Controller/
-        namespace: App\Shared\Application\Controller
-    type: attribute
-mod_controllers:
-    resource:
-        path: ../src/Mod/Application/Controller/
-        namespace: App\Mod\Application\Controller
+        path: ../src/Application/Controller/
+        namespace: App\Application\Controller
     type: attribute

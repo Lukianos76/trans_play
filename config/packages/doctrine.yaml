@@ -1,3 +1,6 @@
+parameters:
+    doctrine_mapping_dir: "%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping"
+
 doctrine:
     dbal:
         url: "%env(resolve:DATABASE_URL)%"
@@ -11,24 +14,27 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            Shared:
-                {
-                    is_bundle: false,
-                    type: xml,
-                    dir: "%kernel.project_dir%/src/Shared/Infrastructure/Doctrine/Mapping",
-                    prefix: App\Shared\Domain\Entity,
-                    alias: Shared,
-                    mapping: true,
-                }
+            App:
+                is_bundle: false
+                type: xml
+                dir: "%doctrine_mapping_dir%"
+                prefix: App\Domain\Entity
+                alias: App
+                mapping: true
+            File:
+                is_bundle: false
+                type: xml
+                dir: "%doctrine_mapping_dir%/File"
+                prefix: App\Domain\Entity\File
+                alias: File
+                mapping: true
             Mod:
-                {
-                    is_bundle: false,
-                    type: xml,
-                    dir: "%kernel.project_dir%/src/Mod/Infrastructure/Doctrine/Mapping",
-                    prefix: App\Mod\Domain\Entity,
-                    alias: Mod,
-                    mapping: true,
-                }
+                is_bundle: false
+                type: xml
+                dir: "%doctrine_mapping_dir%/Mod"
+                prefix: App\Domain\Entity\Mod
+                alias: Mod
+                mapping: true
         controller_resolver:
             auto_mapping: false
 when@test:

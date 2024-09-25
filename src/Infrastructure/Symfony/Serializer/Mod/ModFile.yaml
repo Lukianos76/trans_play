@@ -1,0 +1,8 @@
+App\Domain\Entity\Mod\ModFile:
+  attributes:
+    id:
+      groups: ["modFile", "mod"]
+    mod:
+      groups: ["modFile"]
+    file:
+      groups: ["modFile", "mod"]

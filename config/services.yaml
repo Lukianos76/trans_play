@@ -1,22 +1,38 @@
 parameters:
     filesystem_type: "local" # or 's3'
-    filesystem_config:
-        path: "%kernel.project_dir%/var/uploads"
+    filesystem_config.path: "%kernel.project_dir%/var/uploads"
 
 services:
     _defaults:
         autowire: true
         autoconfigure: true
+
     App\:
-        resource: ../src/
+        resource: "../src/"
         exclude:
-            - ../src/DependencyInjection/
-            - ../src/Shared/Infrastructure/Symfony/Kernel.php
-            - ../src/Shared/Infrastructure/Doctrine/Migration/
-            - ../src/Shared/Infrastructure/Symfony/Command/templates/
-            - "%kernel.project_dir%/src/Shared/Domain/Entity/"
-            - "%kernel.project_dir%/src/Mod/Domain/Entity/"
-    App\Shared\Infrastructure\FileSystem\FileSystemFactory:
+            - "../src/DependencyInjection/"
+            - "../src/Infrastructure/Symfony/Kernel.php"
+            - "../src/Infrastructure/Doctrine/Migration/"
+            - "%kernel.project_dir%/src/Domain/Entity/"
+
+    App\Infrastructure\Exception\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+        arguments:
+            $logger: "@logger"
+            $environment: "%kernel.environment%"
+
+    App\Infrastructure\FileSystem\FileSystemFactory:
         arguments:
             $type: "%filesystem_type%"
             $config: "%filesystem_config%"
+
+    App\Infrastructure\FileSystem\LocalFileSystem:
+        arguments:
+            $path: "%filesystem_config.path%"
+
+    App\Infrastructure\Doctrine\Listener\DoctrineFileDeletionListener:
+        arguments:
+            $fileSystem: '@App\Domain\FileSystem\FileSystemInterface'
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
